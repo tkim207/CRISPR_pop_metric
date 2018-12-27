@@ -123,7 +123,7 @@ The following script run_PDI_total.py enables you to get 3 population level metr
 python run_PDI_total.py -p CC CCA CCT CCG CCC -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_PAM_0mm.tsv
 ```
 
- A blastdb is built from the viral genomes, and a directory is created for the blast alignments with cutoff values PAMs, protospacer and spacer basepairs. The output file yell_sirv_PAM_0mm.tsv contains a tab delimited file with a virus<tab>PI<tab>PDI<tab>IDI. The example in this repository is shown below (yell_sirv_PAM_0mm.tsv).
+ A blastdb is built from the viral genomes, and a directory is created for the blast alignments with cutoff values PAMs, protospacer and spacer basepairs. Tha extra.aln file in the directory let's you see PAMs and discover new possible motifs. The output file yell_sirv_PAM_0mm.tsv contains a tab delimited file with a virus<tab>PI<tab>PDI<tab>IDI. The example in this repository is shown below (yell_sirv_PAM_0mm.tsv).
   
  ```
 phage	PI	PDI	IDI
@@ -134,3 +134,15 @@ SIRV4	0.425	0.161538461538	0.925
 SIRV7	0.525	0.251282051282	0.95
 SIRV5	0.55	0.279487179487	0.925
 ```
+You can run this script without PAMs as well. All you have to do is leave the -p argument blank.
+
+```
+python run_PDI_total.py -p -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
+```
+
+You can change the mismatches as well. If a -c 1 is 100% match, then it is 0 mismatches. If -c is .9 out of a 32 base pair spacer you need at least 29 basepairs to match between spacer to protospacer to count for these metrics. That would be a 3 mismatch cutoff. The below example indicates no PAM match as well as a 3 mismatch stringency.
+
+```
+python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
+```
+Feel free to play around with the parameters and CRISPR communities. Changing the stringency of matches may reveal something about the ancestral or current state of CRISPR immunity. 
