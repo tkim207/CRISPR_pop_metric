@@ -71,7 +71,7 @@ In the example below, -m indicates number of mismatches between spacers to group
 ```
 python2 create_index.py -g genome2fileYellowstone -o yell.index -m 0
 ```
-The example above also spits out a fasta of consolidated spacers (consolidatedspacers.fasta) which is a set of numbered spacers shared between strains. This repository has the example fasta that is created. This example also spits out a file called yell.index. The content of this file contains a strain name <tab> spacer <tab> spacer<tab>... It has all the strains with corresponding spacer found in the consolidated spacer file. An snippet is shown below.
+The example above also spits out a fasta of consolidated spacers (consolidatedspacers.fasta) which is a set of numbered spacers shared between strains. This repository has the example fasta that is created. This example also spits out a file called yell.index. The content of this file contains a strain name (tab) spacer (space) spacer(space)... It has all the strains with corresponding spacer found in the consolidated spacer file. An snippet is shown below.
   
 ```  
 NL01B_C01_23	 13 24 28 47 68 78 103 131 141 157 166 193 212 220 223 237 252 255 270 284 293 309 327 332 338 350 369 377 407 438 445 463 467 472 482 543 546 567 648 673 691 698 702 703 716 753 755 781 802 812 830 844 876 883 892 895 902 906 948 949 953 959 991 994 1021 1024 1035 1058 1071 1075 1109 1114 1115 1136 1137 1154 1168 1180 1244 1255 1264 1267 1287 1302 1312 1328 1338 1344 1346 1355 1359 1364 1372 1387 1389 1422 1428 1434 1439 1477 1495 1580 1590 1695 1705 1708
@@ -123,7 +123,7 @@ The following script run_PDI_total.py enables you to get 3 population level metr
 python run_PDI_total.py -p CC CCA CCT CCG CCC -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_PAM_0mm.tsv
 ```
 
- A blastdb is built from the viral genomes, and a directory is created for the blast alignments with cutoff values PAMs, protospacer and spacer basepairs. Tha extra.aln file in the directory let's you see PAMs and discover new possible motifs. The output file yell_sirv_PAM_0mm.tsv contains a tab delimited file with a virus<tab>PI<tab>PDI<tab>IDI. The example in this repository is shown below (yell_sirv_PAM_0mm.tsv).
+ A blastdb is built from the viral genomes, and a directory is created for the blast alignments with cutoff values PAMs, protospacer and spacer basepairs. Tha extra.aln file in the directory let's you see PAMs and discover new possible motifs. The output file yell_sirv_PAM_0mm.tsv contains a tab delimited file with a virus(tab)PI(tab)PDI(tab)IDI. The example in this repository is shown below (yell_sirv_PAM_0mm.tsv).
   
  ```
 phage	PI	PDI	IDI
