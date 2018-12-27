@@ -3,7 +3,7 @@ This repository holds three main scripts that allow you to explore the populatio
 
 ## Getting Started
 
-These instructions will get let you caculate PI, PDI, and IDI based on a set of genomes/
+These instructions will get let you calculate PI, PDI, and IDI based on a set of genomes.
 
 ### Prerequisites
 
