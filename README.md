@@ -113,9 +113,24 @@ TGAAGGGGAACCTACTTTATATATGTGTGCTATTTCT
 ```
 ## Calculating PI, PDI, and IDI
 
-The following script run_PDI_total.py enables you to get 3 population level metrics of CRISPR immunity. It works in conjuction with PAMProtoPatternGrab.py, so these two scripts have to be in the same folder and must be run in the same folder. Arguments are described in parenthesis for this script. This program requires a cutoff for matches between spacer and protospacer (-c), consolidated spacer file created previously as consolidatedspacers.fa (-s), index file created as yell.index previously(-i), genomes of viruses (-v) supplied in this repository as SIRV_genomes.fasta, and an output file for population metrics (-o). 
+```
+usage: run_PDI_total.py [-h] -p [PAM [PAM ...]] -c CUTOFF -s SPACERFASTA -i
+                        INDEXFILE -v VIRUSFASTA -o OUTPUT [-r]
+```
+The following script run_PDI_total.py enables you to get 3 population level metrics of CRISPR immunity. It works in conjuction with PAMProtoPatternGrab.py, so these two scripts have to be in the same folder and must be run in the same folder. Arguments are described in parenthesis for this script. This program requires an alignment cutoff for matches between spacer and protospacer (-c), a set of protospacer adjacent motifs/PAMs (-p), consolidated spacer file created previously as consolidatedspacers.fa (-s), index file created as yell.index previously(-i), genomes of viruses (-v) supplied in this repository as SIRV_genomes.fasta, and an output file for population metrics (-o). An example is run below which has 5 possible PAMs, cutoff of 1 (so 100% match between protospacer and spacer), index created previously, fasta of viral genomes, and any output file name you specify to get metrics for each virus.
 
 ```
 python run_PDI_total.py -p CC CCA CCT CCG CCC -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_PAM_0mm.tsv
 ```
 
+ A blastdb is built from the viral genomes, and a directory is created for the blast alignments with cutoff values PAMs, protospacer and spacer basepairs. The output file yell_sirv_PAM_0mm.tsv contains a tab delimited file with a virus<tab>PI<tab>PDI<tab>IDI. The example in this repository is shown below (yell_sirv_PAM_0mm.tsv).
+  
+ ```
+phage	PI	PDI	IDI
+SIRV9	0.15	0.0153846153846	0.2
+SIRV8	0.125	0.0102564102564	0.125
+SIRV10	0.175	0.0230769230769	0.175
+SIRV4	0.425	0.161538461538	0.925
+SIRV7	0.525	0.251282051282	0.95
+SIRV5	0.55	0.279487179487	0.925
+```
