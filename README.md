@@ -1,5 +1,5 @@
 # PDI_PI_IDI
-Scripts that make PDI IDI calculations
+This repository holds three main scripts that allow you to explore the population level metrics of CRISPR immunity (PI,PDI,IDI) in a community of microbial hosts and viruses. 
 
 ## Getting Started
 
@@ -11,7 +11,7 @@ BLASTn
 
 ### Installing
 
-You will need to download two scripts create_index.py and run_PDI_total.py. They will have to be in the same folder to work. Also, you have to run these programs within the same directory.
+You will need to download three scripts create_index.py, run_PDI_total.py, PAMProtoPatternGrab_full.py. run_PDI_total.py and PAMProtoPatternGrab_full.py will have to be in the same folder to work. Also, you have to run these programs within the same directory. Fasta files can be run from any directory.
 
 ## Running the create index
 
@@ -111,3 +111,11 @@ ACAGTTGTTTACAATTTATCACATTTTGTCTAATAGTGCTT
 TGAAGGGGAACCTACTTTATATATGTGTGCTATTTCT
 
 ```
+## Calculating PI, PDI, and IDI
+
+The following script run_PDI_total.py enables you to get 3 population level metrics of CRISPR immunity. It works in conjuction with PAMProtoPatternGrab.py, so these two scripts have to be in the same folder and must be run in the same folder. Arguments are described in parenthesis for this script. This program requires a cutoff for matches between spacer and protospacer (-c), consolidated spacer file created previously as consolidatedspacers.fa (-s), index file created as yell.index previously(-i), genomes of viruses (-v) supplied in this repository as SIRV_genomes.fasta, and an output file for population metrics (-o). 
+
+```
+python run_PDI_total.py -p CC CCA CCT CCG CCC -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_PAM_0mm.tsv
+```
+
