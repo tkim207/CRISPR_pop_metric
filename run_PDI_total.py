@@ -5,6 +5,8 @@ import sys
 import os.path
 import subprocess
 import itertools
+import shutil
+
 def storeindexfile(indexfile):
     strain2spacer={}
 #    for line in indexfile:
@@ -39,6 +41,19 @@ def storealnfile(aln):
         for line in alnfile:
             phage2spacer.setdefault(line.split('\t')[1],[]).append(line.split('\t')[0])
     return phage2spacer
+
+def storealnfilereads(aln):
+    phage2spacer={}
+    with open(aln, 'r') as alnfile:
+        for line in alnfile:
+            phage2spacer.setdefault(aln,[]).append(line.split('\t')[0])
+    return phage2spacer
+#def storealnfile(aln):
+#    phage2spacer={}
+#    with open(aln, 'r') as alnfile:
+#        for line in alnfile:
+#            phage2spacer.setdefault(line.split('\t')[1],[]).append(line.split('\t')[0])
+#    return phage2spacer
 
 def PAMfilter(PAMs, placutoff, alnfile, output):
     f=open(output,'w')
@@ -91,6 +106,39 @@ def runPDI(phage2spacer, strain2spacer, virL,output):
         f.write(s)
     f.close()  
 
+def runPDIread(phage2spacer, strain2spacer, output):
+    f=open(output,'w')
+    f.write('phage\tPI\tPDI\tIDI\n')
+    #print virL
+    for phage in phage2spacer:
+      totalimmune=0
+      PDIcount=0
+      totalspacer=[]
+      if phage in phage2spacer:
+        for strain in strain2spacer:
+            spacer2proto=list(set(strain2spacer[strain]).intersection(set(phage2spacer[phage])))
+            if len(spacer2proto)>0:
+                totalimmune=totalimmune+1
+                totalspacer=totalspacer+spacer2proto
+        PI=float(totalimmune)/len(strain2spacer)
+##        IDI=len(totalspacer)/float(totalimmune)
+        IDI=len(totalspacer)/float(len(strain2spacer))
+        comparisonlist=list(itertools.combinations(strain2spacer,2))
+        for combo in comparisonlist:
+            spacer2proto1=list(set(strain2spacer[combo[0]]).intersection(set(phage2spacer[phage])))
+            spacer2proto2=list(set(strain2spacer[combo[1]]).intersection(set(phage2spacer[phage])))
+            unsharedmatch1= set(spacer2proto1).difference(spacer2proto2)
+            unsharedmatch2= set(spacer2proto2).difference(spacer2proto1)
+            if len(unsharedmatch1) > 0 and len(unsharedmatch2) > 0:
+                 PDIcount=PDIcount+1
+        PDI=float(PDIcount)/len(comparisonlist)
+        s= '\t'.join([phage,str(PI), str(PDI),str(IDI)])+'\n'
+        f.write(s)
+      elif phage not in phage2spacer:
+        s= '\t'.join([phage, '0','0','0'])+'\n'
+        f.write(s)
+    f.close()  
+
 def main():
     parser = argparse.ArgumentParser(description="Do something.")
     parser.add_argument('-p', '--PAM', required=True, nargs='*')
@@ -99,24 +147,42 @@ def main():
     parser.add_argument('-i', '--indexfile', type=argparse.FileType('r'), default=sys.stdin,required=True)
     parser.add_argument('-v', '--virusfasta', required=True)
     parser.add_argument('-o', '--output', required=True)
-    parser.add_argument('-r', '--complement',action='store_true')
+    parser.add_argument('-q', '--complement',action='store_true')
+    parser.add_argument('-r', '--reads',action='store_true')
     args = parser.parse_args()
     strain2spacer=storeindexfile(args.indexfile) 
-    ##makeblastdb(args.virusfasta)
     print 'PAM list:',args.PAM
-    virL=viruslist(args.virusfasta)
-    ##PAMProto(args.spacerfasta, args.virusfasta) 
-    alnfilename=os.path.basename(args.virusfasta)[:]+'_vs_'+os.path.basename(args.spacerfasta)
-    extra=alnfilename+'.dir/'+alnfilename+'.extra.aln'
-    filt=extra+'.PAMcutoff'
     if args.complement == True:
         PAMs=complementpam(args.PAM)
+        print 'complement PAM list:',PAMs
     else:
         PAMs=args.PAM
-    print 'complement PAM list:',PAMs
+    alnfilename=os.path.basename(args.virusfasta)[:]+'_vs_'+os.path.basename(args.spacerfasta)
+    extra=alnfilename+'.dir/'+alnfilename+'.extra.aln'
+    directory=alnfilename+'.dir/'
+    if os.path.exists(extra):
+        filt=extra+'.PAMcutoff'
+    else:
+        print "building blast db with:", args.virusfasta
+        makeblastdb(args.virusfasta)
+        print "blasting and extending:", args.spacerfasta,args.virusfasta
+        if os.path.isdir(directory):
+            print "diretory exists, removing directory and rerunning"
+            shutil.rmtree(directory)
+        PAMProto(args.spacerfasta, args.virusfasta) 
+        filt=extra+'.PAMcutoff'
+    print "filtering blast"
     PAMfilter(PAMs, args.cutoff, extra, filt)
-    phage2spacer=storealnfile(filt)
-    runPDI(phage2spacer,strain2spacer, virL,args.output)
+    if args.reads == False: 
+        phage2spacer=storealnfile(filt)
+        virL=viruslist(args.virusfasta)
+        runPDI(phage2spacer,strain2spacer, virL,args.output)
+        print "you are running complete viral genomes"
+    elif args.reads == True:
+        phage2spacer=storealnfilereads(filt)
+        runPDIread(phage2spacer,strain2spacer, args.output)
+        print "you are running reads"
+        
 
  
     
