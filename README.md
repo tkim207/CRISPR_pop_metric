@@ -115,7 +115,7 @@ TGAAGGGGAACCTACTTTATATATGTGTGCTATTTCT
 
 ```
 usage: run_PDI_total.py [-h] -p [PAM [PAM ...]] -c CUTOFF -s SPACERFASTA -i
-                        INDEXFILE -v VIRUSFASTA -o OUTPUT [-r]
+                        INDEXFILE -v VIRUSFASTA -o OUTPUT [-r] [-q]
 ```
 The following script run_PDI_total.py enables you to get 3 population level metrics of CRISPR immunity. It works in conjuction with PAMProtoPatternGrab.py, so these two scripts have to be in the same folder and must be run in the same folder. Arguments are described in parenthesis for this script. This program requires an alignment cutoff for matches between spacer and protospacer (-c), a set of protospacer adjacent motifs/PAMs (-p), consolidated spacer file created previously as consolidatedspacers.fa (-s), index file created as yell.index previously(-i), genomes of viruses (-v) supplied in this repository as SIRV_genomes.fasta, and an output file for population metrics (-o). An example is run below which has 5 possible PAMs, cutoff of 1 (so 100% match between protospacer and spacer), index created previously, fasta of viral genomes, and any output file name you specify to get metrics for each virus.
 
@@ -145,4 +145,15 @@ You can change the mismatches as well. If a -c 1 is 100% match, then it is 0 mis
 ```
 python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
 ```
+You can run reads as opposed to whole viral genomes below with the argument -r. 
+
+```
+python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv -r
+```
+You can also flip the PAM complementary if your spacers were somehow flipped around on the other strand when you extracted your spacers with dash q.
+
+```
+python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv -r -q
+```
+Feel free to play around with the parameters and CRISPR communities. Changing the stringency of matches may reveal something about the ancestral or current state of CRISPR immunity. 
 Feel free to play around with the parameters and CRISPR communities. Changing the stringency of matches may reveal something about the ancestral or current state of CRISPR immunity. 
