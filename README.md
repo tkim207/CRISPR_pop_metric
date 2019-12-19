@@ -7,6 +7,7 @@ These instructions will get let you calculate PI, PDI, and IDI based on a set of
 
 ### Prerequisites
 
+python2
 BLASTn
 
 ### Installing
