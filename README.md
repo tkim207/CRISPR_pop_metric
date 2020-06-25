@@ -122,7 +122,7 @@ usage: run_PDI_total.py [-h] -p [PAM [PAM ...]] -c CUTOFF -s SPACERFASTA -i
 The following script run_PDI_total.py enables you to get 3 population level metrics of CRISPR immunity. It works in conjuction with PAMProtoPatternGrab.py, so these two scripts have to be in the same folder and must be run in the same folder. Arguments are described in parenthesis for this script. This program requires an alignment cutoff for matches between spacer and protospacer (-c), a set of protospacer adjacent motifs/PAMs (-p), consolidated spacer file created previously as consolidatedspacers.fa (-s), index file created as yell.index previously(-i), genomes of viruses (-v) supplied in this repository as SIRV_genomes.fasta, and an output file for population metrics (-o). An example is run below which has 5 possible PAMs, cutoff of 1 (so 100% match between protospacer and spacer), index created previously, fasta of viral genomes, and any output file name you specify to get metrics for each virus.
 
 ```
-python run_PDI_total.py -p CC CCA CCT CCG CCC -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_PAM_0mm.tsv
+python2 run_PDI_total.py -p CC CCA CCT CCG CCC -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_PAM_0mm.tsv
 ```
 
  A blastdb is built from the viral genomes, and a directory is created for the blast alignments with cutoff values PAMs, protospacer and spacer basepairs. Tha extra.aln file in the directory let's you see PAMs and discover new possible motifs. The output file yell_sirv_PAM_0mm.tsv contains a tab delimited file with a virus(tab)PI(tab)PDI(tab)IDI. The example in this repository is shown below (yell_sirv_PAM_0mm.tsv).
@@ -139,23 +139,23 @@ SIRV5	0.55	0.279487179487	0.925
 You can run this script without PAMs as well. All you have to do is leave the -p argument blank.
 
 ```
-python run_PDI_total.py -p -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
+python2 run_PDI_total.py -p -c 1 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
 ```
 
 You can change the mismatches as well. If a -c 1 is 100% match, then it is 0 mismatches. If -c is .9 out of a 32 base pair spacer you need at least 29 basepairs to match between spacer to protospacer to count for these metrics. That would be a 3 mismatch cutoff. The below example indicates no PAM match as well as a 3 mismatch stringency.
 
 ```
-python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
+python2 run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv
 ```
 You can run reads as opposed to whole viral genomes below with the argument -r. 
 
 ```
-python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv -r
+python2 run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv -r
 ```
 You can also flip the PAM complementary if your spacers were somehow flipped around on the other strand when you extracted your spacers with dash q.
 
 ```
-python run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv -r -q
+python2 run_PDI_total.py -p -c .9 -s consolidatedspacers.fa -i yell.index -v SIRV_genomes.fasta -o yell_sirv_0mm.tsv -r -q
 ```
 Feel free to play around with the parameters and CRISPR communities. Changing the stringency of matches may reveal something about the ancestral or current state of CRISPR immunity. 
 Feel free to play around with the parameters and CRISPR communities. Changing the stringency of matches may reveal something about the ancestral or current state of CRISPR immunity. 
