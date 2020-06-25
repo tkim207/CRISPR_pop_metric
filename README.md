@@ -3,7 +3,7 @@ This repository holds three main scripts that allow you to explore the populatio
 
 ## Getting Started
 
-These instructions will get let you calculate PI, PDI, and IDI based on a set of genomes.
+These instructions will get let you calculate PI, PDI, and IDI based on a set of genomes. If you need to extract spacers from reads or amplicons https://github.com/tkim207/spacerblast. If you want to perform the same analysis on amplicons. You can find that here https://github.com/tkim207/CRISPR_amplicon.
 
 ### Prerequisites
 
